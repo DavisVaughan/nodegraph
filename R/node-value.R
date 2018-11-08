@@ -34,6 +34,25 @@ ValueNode <- R6Class(
     },
 
     # --------------------------------------------------------------------------
+    # Printing
+    print = function(node_type, inject, ...) {
+
+      if (is_missing(node_type)) {
+        node_type <- "ValueNode"
+      }
+
+      node_type <- paste0("<", node_type, ">")
+      cat(node_type, "\n")
+
+      if (!is_missing(inject)) {
+        cat(inject)
+        cat("\n")
+      }
+
+      print(self$get_value())
+    },
+
+    # --------------------------------------------------------------------------
     # Dim getter / setter
     get_dim = function() {
       vec_dim(private$value)

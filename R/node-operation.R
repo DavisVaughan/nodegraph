@@ -23,6 +23,7 @@ OperationNode <- R6Class(
       arguments <- list2(...)
       arguments <- map(arguments, nodify)
 
+      # We don't know the result, but we can predict the shape
       dim <- compute_common_dim(arguments)
 
       map(arguments, self$set_argument)
@@ -30,8 +31,14 @@ OperationNode <- R6Class(
       private$operation <- operation
       private$extra_arguments <- private$extra_arguments
 
-      # Unknown value, but we know the shape
       super$initialize(dim = dim, name = name)
+    },
+
+    # --------------------------------------------------------------------------
+    # Initializer
+    print = function(...) {
+      inject <- paste0("Operation: ", self$get_operation())
+      super$print(node_type = "OperationNode", inject = inject)
     },
 
     # --------------------------------------------------------------------------
