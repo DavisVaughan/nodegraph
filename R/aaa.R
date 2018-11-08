@@ -2,4 +2,5 @@
 NULL
 
 #' @import rlang
+#' @import vctrs
 NULL

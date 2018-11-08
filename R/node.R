@@ -1,4 +1,5 @@
-Node <- R6Class("Node",
+Node <- R6Class(
+  "Node",
 
   # Public
   public = list(

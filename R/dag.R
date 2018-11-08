@@ -90,19 +90,21 @@ DAG <- R6Class("DAG",
         dimnames = list(node_names, node_names)
       )
 
-      # Children are in the top left
-      # Directed adjacency matrix - build by stepping through children
+      # Children are in the bottom left
+      # Directed adjacency matrix - build by stepping through nodes
       # and marking any children of the current node with a 1 in that row
       # Row = from, Col = to
+      # Arrows are drawn FROM child TO parent
       for(node in nodes) {
 
         node_nm <- node$get_name()
-        children <- node$get_children()
-        children_nms <- map_R6(children, get_name)
 
-        for(child_nm in children_nms) {
-          dag_mat[[node_nm, child_nm]] <- 1L
-        }
+        children <- node$get_children()
+        children_nms <- map_chr_R6(children, get_name)
+
+        # FROM child TO parent
+        # [FROM, TO]
+        dag_mat[children_nms, node_nm] <- 1L
 
       }
 
