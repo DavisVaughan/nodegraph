@@ -27,22 +27,6 @@ Node <- R6Class(
     },
 
     # --------------------------------------------------------------------------
-    # Parents
-    get_parents = function() {
-      private$parents
-    },
-
-    get_parent = function(id) {
-      private$parents[[id]]
-    },
-
-    add_parent = function(node) {
-      validate_Node(node)
-      private$parents <- c(private$parents, node)
-      invisible(self)
-    },
-
-    # --------------------------------------------------------------------------
     # Children
     get_children = function() {
       private$children
@@ -55,7 +39,6 @@ Node <- R6Class(
     add_child = function(node) {
       validate_Node(node)
       private$children <- c(private$children, node)
-      node$add_parent(self)
       invisible(self)
     }
 
@@ -67,7 +50,6 @@ Node <- R6Class(
     # --------------------------------------------------------------------------
     # Private variables
     name = "",
-    parents = list(),
     children = list(),
 
     # --------------------------------------------------------------------------

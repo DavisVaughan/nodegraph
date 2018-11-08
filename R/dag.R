@@ -38,8 +38,8 @@ DAG <- R6Class("DAG",
       invisible(self)
     },
 
-    # adds nodes recursively to add entire family
-    add_family = function(node) {
+    # adds nodes recursively to add entire dependency chain
+    add_node_and_dependencies = function(node) {
 
       nm <- node$get_name()
       already_exists <- nm %in% names(private$nodes)
@@ -50,19 +50,19 @@ DAG <- R6Class("DAG",
         self$add_node(node)
 
         # find immediate family (not including node itself)
-        family <- c(node$get_parents(), node$get_children())
+        children <- node$get_children()
 
         # get and assign their names
-        family_names <- map_chr_R6(family, get_name)
-        names(family) <- family_names
+        children_names <- map_chr_R6(children, get_name)
+        names(children) <- children_names
 
         # find the unregistered ones (not required but results in less loops)
-        registered_lgl <- family_names %in% names(private$nodes)
-        unregistered <- family[!registered_lgl]
+        registered_lgl <- children_names %in% names(private$nodes)
+        unregistered <- children[!registered_lgl]
 
         # add them to the node list
-        for (relative in unregistered)
-          self$add_family(relative)
+        for (child in unregistered)
+          self$add_node_and_dependencies(child)
       }
 
       invisible(self)
@@ -122,7 +122,7 @@ DAG <- R6Class("DAG",
     # --------------------------------------------------------------------------
     # Private helpers
     construct_dag = function(nodes) {
-      lapply(nodes, self$add_family)
+      lapply(nodes, self$add_node_and_dependencies)
     }
 
   )
