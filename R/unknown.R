@@ -48,3 +48,7 @@ unknowns <- function(dims = c(1, 1), data = as.numeric(NA)) {
   dim(x) <- value
   as.unknowns(x)
 }
+
+is_unknowns <- function(x) {
+  inherits(x, "unknowns")
+}

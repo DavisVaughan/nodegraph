@@ -19,3 +19,7 @@ nodify.Node <- function(x) {
 nodify.numeric <- function(x) {
   ValueNode$new(value = x)
 }
+
+get_node <- function(x) {
+  attr(x, "node")
+}
