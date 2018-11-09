@@ -104,4 +104,21 @@ backend you use, but some backends allow for _broadcasting_ which can change
 the dimensions substantially. The default method uses R's strict dimensionality
 rules.
 
+## Eager execution
+
+If you want to enable eager execution (for debugging or whatever reason),
+you can do so with `set_computation_type("eager")` which will result in the
+computation being performed immediately:
+
+```{r}
+delay_mat + delay_mat2
+
+set_computation_type("eager")
+
+delay_mat + delay_mat2
+
+set_computation_type("lazy")
+
+delay_mat + delay_mat2
+```
 

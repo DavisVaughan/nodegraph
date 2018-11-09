@@ -162,3 +162,57 @@ methods for the following 2 functions to get the laziness you see here:
     allow for *broadcasting* which can change the dimensions
     substantially. The default method uses R’s strict dimensionality
     rules.
+
+## Eager execution
+
+If you want to enable eager execution (for debugging or whatever
+reason), you can do so with `set_computation_type("eager")` which will
+result in the computation being performed immediately:
+
+``` r
+delay_mat + delay_mat2
+#> <delay_array>
+#>       [,1]
+#>  [1,]  ?  
+#>  [2,]  ?  
+#>  [3,]  ?  
+#>  [4,]  ?  
+#>  [5,]  ?  
+#>  [6,]  ?  
+#>  [7,]  ?  
+#>  [8,]  ?  
+#>  [9,]  ?  
+#> [10,]  ?
+
+set_computation_type("eager")
+
+delay_mat + delay_mat2
+#> <delay_array>
+#>       [,1]
+#>  [1,]    2
+#>  [2,]    4
+#>  [3,]    6
+#>  [4,]    8
+#>  [5,]   10
+#>  [6,]   12
+#>  [7,]   14
+#>  [8,]   16
+#>  [9,]   18
+#> [10,]   20
+
+set_computation_type("lazy")
+
+delay_mat + delay_mat2
+#> <delay_array>
+#>       [,1]
+#>  [1,]  ?  
+#>  [2,]  ?  
+#>  [3,]  ?  
+#>  [4,]  ?  
+#>  [5,]  ?  
+#>  [6,]  ?  
+#>  [7,]  ?  
+#>  [8,]  ?  
+#>  [9,]  ?  
+#> [10,]  ?
+```
