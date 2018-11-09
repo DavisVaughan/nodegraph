@@ -216,3 +216,14 @@ delay_mat + delay_mat2
 #>  [9,]  ?  
 #> [10,]  ?
 ```
+
+## Plots
+
+You can plot a lazy matrix and it’s dependency chain with `plot()`.
+Currently it’s pretty ugly. I can’t show it here because `DiagrammeR`
+requires this to be an HTML document.
+
+``` r
+new_res <- delay_mat + delay_mat2 / delay_mat
+plot(new_res)
+```

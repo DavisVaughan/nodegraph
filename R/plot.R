@@ -1,3 +1,4 @@
+#' @export
 plot.delay_array <- function(x, ...) {
 
   if (!requireNamespace("DiagrammeR", quietly = TRUE)) {
