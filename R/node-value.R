@@ -53,6 +53,15 @@ ValueNode <- R6Class(
     },
 
     # --------------------------------------------------------------------------
+    # Compute
+
+    # Value nodes already know their result
+
+    compute_chain = function(x, self) {
+      x
+    },
+
+    # --------------------------------------------------------------------------
     # Dim getter / setter
     get_dim = function() {
       vec_dim(private$value)

@@ -1,9 +1,14 @@
-new_delay_array <- function(.data, node, ..., subclass = character()) {
+new_delay_array <- function(.data = numeric(), node, ..., subclass = character()) {
+
+  if (is_missing(node)) {
+    node <- ValueNode$new(.data)
+  }
+
   new_vctr(.data = .data, node = node, ..., class = c(subclass, "delay_array"))
 }
 
 #' @export
-delay_array <- function(x) {
+delay_array <- function(x = numeric()) {
   as_delay_array(x)
 }
 

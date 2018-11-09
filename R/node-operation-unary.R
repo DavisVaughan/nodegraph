@@ -14,7 +14,16 @@ UnaryOperationNode <- R6Class(
         abort("`x` must be supplied for a unary operation.")
       }
 
-      super$initialize(operation = operation, x, extra_arguments = extra_arguments, name = name)
+      x <- nodify(x)
+
+      super$initialize(
+        operation = operation,
+        x,
+        dim = x$get_dim(),
+        extra_arguments = extra_arguments,
+        name = name
+      )
+
     }
 
   )

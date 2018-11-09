@@ -9,7 +9,7 @@ OperationNode <- R6Class(
 
     # `...` could already be a ValueNode or it could be a new R matrix/array
 
-    initialize = function(operation, ..., extra_arguments = list(), name = NULL) {
+    initialize = function(operation, ..., dim, extra_arguments = list(), name = NULL) {
 
       if (!is_scalar_character(operation)) {
         abort("`operation` must be a length 1 character")
@@ -22,9 +22,6 @@ OperationNode <- R6Class(
       # Capture args, make them all nodes, compute result dimension
       arguments <- list2(...)
       arguments <- map(arguments, nodify)
-
-      # We don't know the result, but we can predict the shape
-      dim <- compute_common_dim(arguments)
 
       map(arguments, self$set_argument)
 
@@ -39,6 +36,46 @@ OperationNode <- R6Class(
     print = function(...) {
       inject <- paste0("Operation: ", self$get_operation())
       super$print(node_type = "OperationNode", inject = inject)
+    },
+
+    # --------------------------------------------------------------------------
+    # Compute
+
+    # Recursively perform computation, finalizing values as we go if possible
+    # Pass through `self` so we can also pass in `child` later. This is a
+    # different "self" and is necessary so compute_engine() is able to work
+    # with the correct node
+
+    compute_chain = function(x, self) {
+
+      # Escape
+      self_value <- self$get_value()
+      if (!is_unknowns(self_value)) {
+        return(self_value)
+      }
+
+      children <- self$get_children()
+
+      # Compute all children so I can compute myself
+      for(child in children) {
+        child_value <- child$get_value()
+        if (is_unknowns(child_value)) {
+          child$compute_chain(x, child)
+        }
+      }
+
+      # Generic computation engine
+      res <- self$compute_engine(x, self)
+
+      # I know myself!
+      self$set_value(res)
+
+      invisible(self)
+    },
+
+    # External parties define methods for this
+    compute_engine = function(x, self) {
+      UseMethod("compute_engine")
     },
 
     # --------------------------------------------------------------------------

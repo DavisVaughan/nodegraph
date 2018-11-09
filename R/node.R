@@ -40,6 +40,14 @@ Node <- R6Class(
       validate_Node(node)
       private$children <- c(private$children, node)
       invisible(self)
+    },
+
+    num_children = function() {
+      length(private$children)
+    },
+
+    has_children = function() {
+      self$num_children() > 0
     }
 
   ),
