@@ -9,7 +9,7 @@ OperationNode <- R6Class(
 
     # `...` could already be a ValueNode or it could be a new R matrix/array
 
-    initialize = function(operation, ..., dim, extra_arguments = list(), name = NULL) {
+    initialize = function(operation, ..., extra_arguments = list(), name = NULL) {
 
       if (!is_scalar_character(operation)) {
         abort("`operation` must be a length 1 character")
@@ -23,12 +23,23 @@ OperationNode <- R6Class(
       arguments <- list2(...)
       arguments <- map(arguments, nodify)
 
-      map(arguments, self$set_argument)
+      # We don't know the result, but we can predict the shape
+      dim <- do.call(compute_common_dim, c(operation = operation, arguments))
+
+      nodes <- map(arguments, get_node)
+      map(nodes, self$set_argument)
 
       private$operation <- operation
       private$extra_arguments <- private$extra_arguments
 
       super$initialize(dim = dim, name = name)
+
+      computation_type <- get_computation_type()
+      if (computation_type == "eager") {
+        common_type <- do.call(vec_type_common, arguments)
+        self$compute_chain(common_type, self)
+      }
+
     },
 
     # --------------------------------------------------------------------------

@@ -1,3 +1,6 @@
+# nodify() guarantees to return something that you can call
+# get_node() on to retrieve the node
+
 #' @export
 nodify <- function(x) {
   UseMethod("nodify")
@@ -17,4 +20,9 @@ nodify.Node <- function(x) {
 #' @export
 nodify.numeric <- function(x) {
   ValueNode$new(value = x)
+}
+
+#' @export
+nodify.delay_array <- function(x) {
+  x
 }
