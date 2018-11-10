@@ -22,10 +22,14 @@ compute_dim_engine.delay_array <- function(type, operation, ...) {
 
   # the only one this doesn't apply for is %*% with base R
   # that requires dim2[2]==dim1[1] for matrices
-  ok <- all(map2_lgl(dim_lst[1], dim_lst, identical))
+  ok <- map2_lgl(dim_lst[1], dim_lst, identical)
 
-  if (!ok) {
-    abort("All arguments must have the same dimensions.")
+  # Special case scalars
+  scalar <- map_int(dim_lst, vec_dims) == 1L
+  ok <- ok | scalar
+
+  if (!all(ok)) {
+    abort("All arguments must have the same dimensions or be scalars.")
   }
 
   dim_lst[[1]]

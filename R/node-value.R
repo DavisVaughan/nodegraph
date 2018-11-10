@@ -94,7 +94,7 @@ ValueNode <- R6Class(
     # --------------------------------------------------------------------------
     # Private validation helpers
     validate_dim_value_structure = function(dim, value) {
-      value_dim <- dim(value)
+      value_dim <- vec_dim(value)
       if (!identical(value_dim, dim)) {
         abort("`dim` and `value` must have the same dimensions.")
       }
@@ -110,9 +110,17 @@ ValueNode <- R6Class(
     },
 
     validate_at_least_2D = function(value) {
+
+      dims <- vec_dims(value)
+
+      # scalars are okay
+      if (dims == 1L && vec_dim(value) == 1L) {
+        return(value)
+      }
+
       value <- as.array(value)
 
-      if (vec_dims(value) == 1L) {
+      if (dims == 1L) {
         dim(value) <- c(dim(value), 1L)
       }
 
