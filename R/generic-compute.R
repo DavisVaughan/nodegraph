@@ -6,6 +6,11 @@ compute <- function(x) {
 }
 
 #' @export
+compute_engine <- function(x, self) {
+  UseMethod("compute_engine")
+}
+
+#' @export
 compute_engine.delay_array <- function(x, self) {
   children_values <- map_R6(self$get_children(), get_value)
   op_fun <- getExportedValue("base", self$get_operation())

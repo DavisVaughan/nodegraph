@@ -1,3 +1,4 @@
+#' @export
 new_delay_array <- function(.data = numeric(), node, ..., subclass = character()) {
 
   if (is_missing(node)) {

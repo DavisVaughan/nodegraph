@@ -1,3 +1,4 @@
+#' @export
 ValueNode <- R6Class(
   "ValueNode",
   inherit = Node,

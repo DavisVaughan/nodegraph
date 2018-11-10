@@ -1,3 +1,4 @@
+#' @export
 BinaryOperationNode <- R6Class(
   "BinaryOperationNode",
   inherit = OperationNode,

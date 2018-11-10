@@ -1,3 +1,4 @@
+#' @export
 OperationNode <- R6Class(
   "OperationNode",
   inherit = ValueNode,
@@ -86,7 +87,7 @@ OperationNode <- R6Class(
 
     # External parties define methods for this
     compute_engine = function(x, self) {
-      UseMethod("compute_engine")
+      compute_engine(x, self)
     },
 
     # --------------------------------------------------------------------------
@@ -112,3 +113,4 @@ OperationNode <- R6Class(
 
   )
 )
+
