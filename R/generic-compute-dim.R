@@ -17,9 +17,6 @@ compute_dim_engine.delay_array <- function(type, operation, ...) {
   nodes <- map(delay_args, get_node)
   dim_lst <- map_R6(nodes, get_dim)
 
-  # if broadcasting was allowed?
-  #eval_bare(expr(pmax(!!!dim_lst)))
-
   # the only one this doesn't apply for is %*% with base R
   # that requires dim2[2]==dim1[1] for matrices
   ok <- map2_lgl(dim_lst[1], dim_lst, identical)
